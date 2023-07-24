@@ -3,6 +3,7 @@ using System.Text;
 
 using BlazorWeb_Client.Serivce.IService;
 using Blazor.Application.DTOs;
+using Blazor.Application.Common;
 
 namespace BlazorWeb_Client.Serivce
 {
@@ -26,8 +27,8 @@ namespace BlazorWeb_Client.Serivce
             string responseResult = response.Content.ReadAsStringAsync().Result;
             if (response.IsSuccessStatusCode)
             {
-                var result = JsonConvert.DeserializeObject<OrderDTO>(responseResult);
-                return result;
+                var result = JsonConvert.DeserializeObject<ApiResponse<OrderDTO>>(responseResult);
+                return result.Data;
             }
             return new OrderDTO();
 
@@ -37,15 +38,15 @@ namespace BlazorWeb_Client.Serivce
         {
             var response = await _httpClient.GetAsync($"/api/order/{orderHeaderId}");
             var content = await response.Content.ReadAsStringAsync();
+                var order = JsonConvert.DeserializeObject<ApiResponse<OrderDTO>>(content);
             if (response.IsSuccessStatusCode)
             {
-                var order = JsonConvert.DeserializeObject<OrderDTO>(content);
-                return order;
+                return order.Data;
             }
             else
             {
-                var errorModel = JsonConvert.DeserializeObject<ErrorModelDTO>(content);
-                throw new Exception(errorModel.ErrorMessage);
+                //var errorModel = JsonConvert.DeserializeObject<ErrorModelDTO>(content);
+                throw new Exception(order.Errors[0]);
             }
         }
 
@@ -55,9 +56,9 @@ namespace BlazorWeb_Client.Serivce
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                var orders = JsonConvert.DeserializeObject<IEnumerable<OrderDTO>>(content);
+                var orders = JsonConvert.DeserializeObject<ApiResponse<IEnumerable<OrderDTO>>>(content);
                
-                return orders;
+                return orders.Data;
             }
 
             return new List<OrderDTO>();
@@ -69,13 +70,13 @@ namespace BlazorWeb_Client.Serivce
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync("api/order/paymentsuccessful", bodyContent);
             string responseResult = response.Content.ReadAsStringAsync().Result;
+                var result = JsonConvert.DeserializeObject<ApiResponse<OrderHeaderDTO>>(responseResult);
             if (response.IsSuccessStatusCode)
             {
-                var result = JsonConvert.DeserializeObject<OrderHeaderDTO>(responseResult);
-                return result;
+                return result.Data;
             }
-            var errorModel = JsonConvert.DeserializeObject<ErrorModelDTO>(responseResult);
-            throw new Exception(errorModel.ErrorMessage);
+            //var errorModel = JsonConvert.DeserializeObject<ErrorModelDTO>(responseResult);
+            throw new Exception(result.Errors[0]);
         }
     }
 }

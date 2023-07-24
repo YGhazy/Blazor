@@ -4,7 +4,7 @@ namespace BlazorWeb_Client.Serivce.IService
 {
     public interface IPaymentService
     {
-        public Task<SuccessModelDTO> Checkout(StripePaymentDTO model);
+        public Task<string> Checkout(StripePaymentDTO model);
 
     }
 }

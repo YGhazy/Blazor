@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using BlazorWeb_Client.Serivce.IService;
 using Blazor.Application.DTOs;
+using Blazor.Application.Common;
 
 namespace BlazorWeb_Client.Serivce
 {
@@ -23,7 +24,7 @@ namespace BlazorWeb_Client.Serivce
             var content = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
-                var product = JsonConvert.DeserializeObject<ProductDTO>(content);
+                var product = JsonConvert.DeserializeObject<ApiResponse<ProductDTO>>(content).Data;
                 product.ImageUrl=BaseServerUrl+product.ImageUrl;
                 return product;
             }
@@ -40,12 +41,12 @@ namespace BlazorWeb_Client.Serivce
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                var products = JsonConvert.DeserializeObject<IEnumerable<ProductDTO>>(content);
-                foreach(var prod in products)
+                var products = JsonConvert.DeserializeObject<ApiResponse<IEnumerable<ProductDTO>>>(content);
+                foreach(var prod in products.Data)
                 {
                     prod.ImageUrl=BaseServerUrl+prod.ImageUrl;
                 }
-                return products;
+                return products.Data;
             }
 
             return new List<ProductDTO>();

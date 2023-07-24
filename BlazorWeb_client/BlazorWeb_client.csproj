@@ -26,8 +26,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Blazor_Business\2.Blazor.Application.csproj" />
-    <ProjectReference Include="..\Blazor_Common\Blazor.Common.csproj" />
+    <None Include="Pages\Authentication\Login.razor" />
+    <None Include="Pages\Authentication\Logout.razor" />
+    <None Include="Pages\Authentication\RedirectToLogin.razor" />
+    <None Include="Pages\Authentication\Register.razor" />
+    <None Include="Pages\CartDetails\Cart.razor" />
+    <None Include="Pages\CartDetails\OrderConfirmation.razor" />
+    <None Include="Pages\CartDetails\Summary.razor" />
+    <None Include="wwwroot\js\common.js" />
+    <None Include="wwwroot\js\StripePayment.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\2.Blazor.Application\2.Blazor.Application.csproj" />
+    <ProjectReference Include="..\Blazor.Common\Blazor.Common.csproj" />
   </ItemGroup>
 
 </Project>

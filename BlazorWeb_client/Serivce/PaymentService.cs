@@ -2,6 +2,7 @@
 using System.Text;
 using BlazorWeb_Client.Serivce.IService;
 using Blazor.Application.DTOs;
+using Blazor.Application.Common;
 
 namespace BlazorWeb_Client.Serivce
 {
@@ -13,7 +14,7 @@ namespace BlazorWeb_Client.Serivce
             _httpClient = httpClient;
         }
 
-        public async Task<SuccessModelDTO> Checkout(StripePaymentDTO model)
+        public async Task<string> Checkout(StripePaymentDTO model)
         {
             try
             {
@@ -21,15 +22,15 @@ namespace BlazorWeb_Client.Serivce
                 var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
                 var response = await _httpClient.PostAsync("api/stripepayment/create", bodyContent);
                 string responseResult = response.Content.ReadAsStringAsync().Result;
+                 var result = JsonConvert.DeserializeObject<ApiResponse<string>>(responseResult);
                 if (response.IsSuccessStatusCode)
                 {
-                    var result = JsonConvert.DeserializeObject<SuccessModelDTO>(responseResult);
-                    return result;
+                    return result.Data;
                 }
                 else
                 {
-                    var errorModel = JsonConvert.DeserializeObject<ErrorModelDTO>(responseResult);
-                    throw new Exception(errorModel.ErrorMessage);
+                    //var errorModel = JsonConvert.DeserializeObject<ErrorModelDTO>(responseResult);
+                    throw new Exception(result.Errors[0]);
                 }
             }
             catch (Exception ex)
