@@ -99,15 +99,15 @@ namespace Blazor.Application.Services
             ApiResponse<OrderHeaderDTO> result = new ApiResponse<OrderHeaderDTO>();
             try
             {
-                var service = new SessionService();
-                var sessionDetails = service.Get(orderHeaderDTO.SessionId);
-                if (sessionDetails.PaymentStatus =="paid")
-                {
+                //var service = new SessionService();
+                //var sessionDetails = service.Get(orderHeaderDTO.SessionId);
+                //if (sessionDetails.PaymentStatus =="paid")
+                //{
                     result.Succeeded = true;
                     result.Data =await _orderRepository.MarkPaymentSuccessful(orderHeaderDTO.Id);
 
 
-                    //await _emailSender.SendEmailAsync(orderHeaderDTO.Email, "Tangy Order Confirmation",
+                    //await _emailSender.SendEmailAsync(orderHeaderDTO.Email, " Order Confirmation",
                     //    "New Order has been created :" + orderHeaderDTO.Id);
                     if (result.Data==null)
                     {
@@ -117,10 +117,10 @@ namespace Blazor.Application.Services
 
                     }
                     return result;
-                }
-                result.Succeeded = false;
-                result.Errors.Add("Failed");
-                return result;
+                //}
+                //result.Succeeded = false;
+                //result.Errors.Add("Failed");
+                //return result;
             }
             catch (Exception ex)
             {

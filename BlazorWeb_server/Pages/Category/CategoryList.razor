@@ -2,6 +2,7 @@
 @inject ICategoryRepository _categoryRepository
 @inject IJSRuntime _jsRuntime
 @attribute [Authorize(Roles = SD.Role_Admin)]
+@inject ILogger<CategoryList> Logger
 
 <_DeleteConfirmation IsParentComponentProcessing="IsLoading" ConfirmationChanged="ConfirmDelete_Click"></_DeleteConfirmation>
 <div class="row mt-4">
@@ -80,6 +81,9 @@
         Categories = await _categoryRepository.GetAll();
         IsLoading=false;
         StateHasChanged();
+
+        Logger.LogInformation("Load Categories!");
+
     }
 
     private void HandleDelete(int id)

@@ -21,8 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\2.Blazor.Application\2.Blazor.Application.csproj" />
     <ProjectReference Include="..\1.Blazor.Domain\1.Blazor.Domain.csproj" />
+    <ProjectReference Include="..\2.Blazor.Application\2.Blazor.Application.csproj" />
   </ItemGroup>
 
 </Project>

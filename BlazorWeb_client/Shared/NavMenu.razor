@@ -3,7 +3,8 @@
 @inject ISyncLocalStorageService _localStorage
 @inject ICartService _cartService
 @implements IDisposable
-
+@inject IStringLocalizer<Resources> Loc
+@inject NavigationManager NavManager
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">Tangy</a>
@@ -26,10 +27,27 @@
 
               <AuthorizeView>
                   <Authorized>
+                                             <li class="nav-item p-0">
+                        <NavLink class="nav-link"  @onclick="@changeLang" >
+                            <span class="p-2">
+                                        @if (@CultureInfo.CurrentCulture.ToString()=="en-US")
+                                        {
+                                            <p class="text-center text-danger">العربية</p>
+                                        }
+                                        else
+                                        {
+                                            
+                                        <p class="text-center text-danger">English</p>
+                                        }
+
+                            </span>
+                        </NavLink>
+                    </li>
                        <li class="nav-item p-0">
                         <NavLink class="nav-link" href="#">
                             <span class="p-2">
-                                Hello, @context.User.Identity.Name
+
+                                        @Loc["Welcome"], @context.User.Identity.Name
                             </span>
                         </NavLink>
                     </li>
@@ -79,5 +97,13 @@
     private int GetCartCount(){
         var cart = _localStorage.GetItem<List<ShoppingCart>>(SD.ShoppingCart);
         return cart==null ? 0 : cart.Count;
+    }
+    private void changeLang()
+    {
+        if (@CultureInfo.CurrentCulture.ToString()=="en-US")
+            _localStorage.SetItem("currentcuture", "ar-EG");
+        else 
+            _localStorage.SetItem("currentcuture", "en-US");
+        NavManager.NavigateTo(NavManager.Uri, forceLoad: true);
     }
 }

@@ -32,7 +32,7 @@ namespace Blazor.Application.Services
 
             try
             {
-                var domain = _configuration.GetRequiredSection("Blazor_Client_URL");
+                var domain = _configuration.GetRequiredSection("Blazor_Client_URL").Value;
 
                 var options = new SessionCreateOptions
                 {
@@ -64,7 +64,7 @@ namespace Blazor.Application.Services
 
                 var service = new SessionService();
                 Session session = service.Create(options);
-                result.Succeeded = false;
+                result.Succeeded = true;
                 result.Data = session.Id+";"+session.PaymentIntentId;
                 return result;
             }

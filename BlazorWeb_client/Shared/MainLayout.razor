@@ -2,5 +2,15 @@
 
 <NavMenu />
 <div class="main">
-    @Body
+    <ErrorBoundary @ref="errorBoundary">
+        @Body
+    </ErrorBoundary>
 </div>
+@code {
+    private ErrorBoundary? errorBoundary;
+
+    protected override void OnParametersSet()
+    {
+        errorBoundary?.Recover();
+    }
+}

@@ -4,6 +4,7 @@
 @inject IProductService _productService
 @inject IPaymentService _paymentService
 @inject IOrderService _orderService
+@inject NavigationManager Navigation
 
 @attribute [Authorize]
 @if (IsProcessing)
@@ -165,18 +166,19 @@ else
                     Order= Order
                 };
 
-            var result = await _paymentService.Checkout(paymentDto);
+            //var result = await _paymentService.Checkout(paymentDto);
 
-            var StripeSessionAndPI = result.ToString().Split(';');
+            //var StripeSessionAndPI = result.ToString().Split(';');
 
-            Order.OrderHeader.SessionId= StripeSessionAndPI[0];
-            Order.OrderHeader.PaymentIntentId= StripeSessionAndPI[1];
+            //Order.OrderHeader.SessionId= StripeSessionAndPI[0];
+            //Order.OrderHeader.PaymentIntentId= StripeSessionAndPI[1];
 
             var orderDTOSaved = await _orderService.Create(paymentDto);
 
              await _localStorage.SetItemAsync(SD.Local_OrderDetails, orderDTOSaved);
+            Navigation.NavigateTo("OrderConfirmation");
 
-            await _jsRuntime.InvokeVoidAsync("redirectToCheckout", StripeSessionAndPI[0]);
+            //await _jsRuntime.InvokeVoidAsync("redirectToCheckout", StripeSessionAndPI[0]);
         }
         catch(Exception e)
         {

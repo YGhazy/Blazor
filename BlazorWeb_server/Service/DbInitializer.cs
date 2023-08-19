@@ -42,12 +42,12 @@ namespace BlazorWeb_server.Service
 
                 IdentityUser user = new()
                 {
-                    UserName="bhrugen@dotnetmastery.com",
-                    Email="bhrugen@dotnetmastery.com",
+                    UserName="admin@gmail.com",
+                    Email="admin@gmail.com",
                     EmailConfirmed=true
                 };
 
-                _userManager.CreateAsync(user, "Admin123*").GetAwaiter().GetResult();
+                _userManager.CreateAsync(user, "P@ssw0rd").GetAwaiter().GetResult();
 
                 _userManager.AddToRoleAsync(user, SD.Role_Admin).GetAwaiter().GetResult();
 

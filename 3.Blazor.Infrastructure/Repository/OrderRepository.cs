@@ -56,7 +56,7 @@ namespace Blazor.Application.Repository
         {
             try
             {
-                var obj = _mapper.Map<OrderDTO, Order>(objDTO);
+                var obj = _mapper.Map<OrderDTO, Blazor.Infrastructure.ViewModel.Order>(objDTO);
                 _db.OrderHeaders.Add(obj.OrderHeader);
                 await _db.SaveChangesAsync();
 
